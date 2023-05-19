@@ -24,5 +24,10 @@ class LoginView(generics.GenericAPIView):
 
 
 class ProfileView(generics.GenericAPIView):
-    queryset = Profile.objects.all()
+    # queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+    def get(self, request):
+        profile = Profile.objects.get(user=request.user)
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)

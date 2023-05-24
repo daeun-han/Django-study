@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.authtoken.models import Token #Token모델
-# from .models import Profile
+from .models import Profile
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -42,21 +42,21 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-# class LoginSerializer(serializers.Serializer):
-#     username = serializers.CharField(required=True)
-#     password = serializers.CharField(required=True, write_only=True)
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, write_only=True)
 
-#     def validate(self, data):
-#         user = authenticate(**data)
-#         if user:
-#             token = Token.objects.get(user=user)
-#             return token
-#         raise serializers.ValidationError(
-#             {"error": "Unable to log in with provided credentials."})
+    def validate(self, data):
+        user = authenticate(**data)
+        if user:
+            token = Token.objects.get(user=user)
+            return token
+        raise serializers.ValidationError(
+            {"error": "Unable to log in with provided credentials."})
 
 
-# class ProfileSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Profile
-#         fields = ("nickname", "position", "subjects", "image")
-#         # extra_kwargs = {"image": {"required": False, "allow_null": True}}
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ("name", "role", "track", "image")
+        # extra_kwargs = {"image": {"required": False, "allow_null": True}}

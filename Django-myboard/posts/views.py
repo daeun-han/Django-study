@@ -36,6 +36,17 @@ def like_post(request, pk):
 
     return Response({'status': 'ok'})
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def lion_emoji_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.user in post.lion_emoji.all():
+        post.lion_emoji.remove(request.user)
+    else:
+        post.lion_emoji.add(request.user)
+
+    return Response({'status': 'ok'})
+
 # class CommentViewSet(viewsets.ModelViewSet):
 #     queryset = Comment.objects.all()
 #     permission_classes = [CustomReadOnly]

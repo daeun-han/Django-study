@@ -17,3 +17,12 @@ class Post(models.Model):
     lion_emoji = models.ManyToManyField(User, related_name='lion_emoji_posts', blank=True)
     lion_emoji_count = models.PositiveIntegerField(default=0) # 0또는 양수만 받는 필드
     published_date = models.DateTimeField(default=timezone.now)
+    
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
+    text = models.TextField()
+    
+    likes = models.ManyToManyField(User, related_name='like_comments', blank=True)
+    like_count = models.PositiveIntegerField(default=0) # 0또는 양수만 받는 필드

@@ -18,9 +18,19 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import re_path
 from myshop import views
+from rest_framework_jwt.views import obtain_jwt_token
+from myshop.models import Real_estate
+
+from django.conf import settings
+from django.conf.urls.static import static   #추가
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^api/realestate/$', views.RS_ViewSet.as_view(), name="RS"),
+    re_path(r'^api/realestate/$', views.RS_ViewSet.as_view(), name="RealEstate"),
     re_path(r'^api/category/$', views.CateViewSet.as_view(), name="Category"),
-]
+    re_path(r'^api-token-auth/', obtain_jwt_token),
+    re_path(r'^api/realestate/landmark/$', views.LandMark.as_view(), name="Landmark"),
+    re_path(r'^api/realestate/commercial/$', views.Commercial.as_view(), name="Commercial"),
+    re_path(r'^api/realestate/residential/$', views.Residential.as_view(), name="Residential"),
+    re_path(r'^api/signup/$', views.Signup.as_view(), name="signup"),
+] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)   #추가

@@ -7,6 +7,7 @@ class CateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class RS_Serializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url= True)      #추가
     class Meta:
         model = Real_estate
         fields = '__all__'

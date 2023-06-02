@@ -70,8 +70,17 @@ class Real_estate(models.Model):
     name = models.CharField(max_length=40, null=False)
     detail = models.TextField(max_length=300, null=False)
     image = models.ImageField(blank=True)  #나중에 blank=False로 수정
-    price = models.CharField(max_length=40, null=False)
+    price = models.IntegerField(default=0)
     upload_date = models.DateTimeField(default=timezone.now) #timezone import
     category = models.ForeignKey(Category, null=False, on_delete=models.CASCADE)
+    #address = models.TextField(max_length=300, null=False)
+    likecount = models.IntegerField(default=0)  #이름 변경
+    #추가
+    LikeUser = models.ManyToManyField(MyUser, blank=True, related_name="LikeUser", through="Like", through_fields=('realestate_post','user'))
     def __str__(self):
         return self.name
+    
+#추가
+class Like(models.Model):
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    realestate_post = models.ForeignKey(Real_estate, on_delete=models.CASCADE)

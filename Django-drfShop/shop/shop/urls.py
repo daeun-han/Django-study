@@ -33,4 +33,5 @@ urlpatterns = [
     re_path(r'^api/realestate/commercial/$', views.Commercial.as_view(), name="Commercial"),
     re_path(r'^api/realestate/residential/$', views.Residential.as_view(), name="Residential"),
     re_path(r'^api/signup/$', views.Signup.as_view(), name="signup"),
+    re_path(r'^api/realestate/(?P<id>\d+)/like/$', views.Recommand.as_view(), name="Like"),
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)   #추가

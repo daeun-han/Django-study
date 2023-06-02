@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Category, Real_estate, MyUser
+from .models import Category, Real_estate, MyUser, Like
 from .serializer import CateSerializer, RS_Serializer
 
 class CateViewSet(APIView):
@@ -61,3 +61,18 @@ class Signup(APIView):
             password = request.data['password']
             MyUser.objects.create_user(email=email, name=name, password=password)
             return Response(email)
+        
+class Recommand(APIView):
+    def post(self, request, id, format=None):
+        queryset = Real_estate.objects.get(id = id)
+        user_email= request.data['username']
+        user = MyUser.objects.get(email= user_email)
+        Recommand_object = Like.objects.filter(user=user, realestate_post=queryset)
+        if Recommand_object.count()>=1:
+            Recommand_object.delete()
+        else:
+            Like.objects.create(user=user, realestate_post=queryset)
+
+        queryset.likecount = Like.objects.filter(realestate_post=queryset).count()
+        queryset.save()
+        return Response("success")

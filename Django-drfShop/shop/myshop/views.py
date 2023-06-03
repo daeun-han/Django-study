@@ -85,26 +85,51 @@ class Recommand(APIView):
         queryset.save()
         return Response("success")
     
-# class Message_view(APIView):
+def Real_estate_order(request, queryset):
+    if request.headers['Sort'] == "recommand" or "":
+        queryset = queryset.order_by('-likecount')
+    elif request.headers['Sort'] == "-recommand":
+        queryset = queryset.order_by('likecount')
+    elif request.headers['Sort'] == "price":
+        queryset = queryset.order_by('-price')
+    elif request.headers['Sort'] == "-price":
+        queryset = queryset.order_by('price')
+    elif request.headers['Sort'] == "upload_date":
+        queryset = queryset.order_by('upload_date')
+    else:
+        queryset = queryset.order_by('-upload_date')
 
-#     def get(self, request, format=None):
-#         user = request.data['username']
-#         queryset_receiver = Message.objects.filter(receiver__email=user)
-#         queryset_sender = Message.objects.filter(sender__email=user)
-#         queryset_total = queryset_receiver | queryset_sender
-#         queryset_total.order_by('send_time')
-#         queryset_total.order_by('__recent_msg')
-#         serializer = Message_Serializer(queryset_total, many=True)
-#         print(queryset_total)
-#         return Response(serializer.data)
+    return queryset
 
-# class RecentMessage(APIView):
+class LandMark(APIView):
+    authentication_classes = []
+    permission_classes = []
+    def get(self, request, format=None):
+        queryset = Real_estate.objects.filter(category__name="랜드마크")
 
-#     def get(self, request, format=None):
-#         user = request.data['username']
-#         queryset_receiver = Message.objects.filter(receiver__email=user, recent_msg=True)
-#         queryset_sender = Message.objects.filter(sender__email=user, recent_msg=True)
-#         queryset_total = queryset_receiver | queryset_sender
-#         serializer = Message_Serializer(queryset_total, many=True)
-#         return Response(serializer.data)
-    
+        ordered_queryset = Real_estate_order(request, queryset)
+
+        serializer = RS_Serializer(ordered_queryset, many=True)
+        return Response(serializer.data)
+
+class Residential(APIView):
+    authentication_classes = []
+    permission_classes = []
+    def get(self, request, format=None):
+        queryset = Real_estate.objects.filter(category__name = "주거용")
+
+        ordered_queryset = Real_estate_order(request, queryset)
+
+        serializer = RS_Serializer(ordered_queryset, many=True)
+        return Response(serializer.data)
+
+class Commercial(APIView):
+    authentication_classes = []
+    permission_classes = []
+    def get(self, request, format=None):
+        queryset = Real_estate.objects.filter(category__name = "상업용")
+
+        ordered_queryset = Real_estate_order(request, queryset)
+
+        serializer = RS_Serializer(ordered_queryset, many=True)
+        return Response(serializer.data)

@@ -85,13 +85,26 @@ class Recommand(APIView):
         queryset.save()
         return Response("success")
     
-class RecentMessage(APIView):
+# class Message_view(APIView):
 
-    def get(self, request, format=None):
-        user = request.headers['Username']
-        queryset_receiver = Message.objects.filter(receiver__email=user, recent_msg=True)
-        queryset_sender = Message.objects.filter(sender__email=user, recent_msg=True)
-        queryset_total = queryset_receiver | queryset_sender
-        serializer = Message_Serializer(queryset_total, many=True)
-        return Response(serializer.data)
+#     def get(self, request, format=None):
+#         user = request.data['username']
+#         queryset_receiver = Message.objects.filter(receiver__email=user)
+#         queryset_sender = Message.objects.filter(sender__email=user)
+#         queryset_total = queryset_receiver | queryset_sender
+#         queryset_total.order_by('send_time')
+#         queryset_total.order_by('__recent_msg')
+#         serializer = Message_Serializer(queryset_total, many=True)
+#         print(queryset_total)
+#         return Response(serializer.data)
+
+# class RecentMessage(APIView):
+
+#     def get(self, request, format=None):
+#         user = request.data['username']
+#         queryset_receiver = Message.objects.filter(receiver__email=user, recent_msg=True)
+#         queryset_sender = Message.objects.filter(sender__email=user, recent_msg=True)
+#         queryset_total = queryset_receiver | queryset_sender
+#         serializer = Message_Serializer(queryset_total, many=True)
+#         return Response(serializer.data)
     

@@ -35,5 +35,5 @@ urlpatterns = [
     url(r'^api/realestate/(?P<id>\d+)/$', views.Detail.as_view(), name="Detail"),  
     url(r'^api/signup/$', views.Signup.as_view(), name="signup"),
     url(r'^api/realestate/(?P<id>\d+)/like/$', views.Recommand.as_view(), name="Like"),
-    url(r'^api/message/recent/$', views.RecentMessage.as_view(), name="RecentMessage"),
+    # url(r'^api/message/recent/$', views.RecentMessage.as_view(), name="RecentMessage"),
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)   #추가

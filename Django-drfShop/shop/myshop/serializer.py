@@ -24,6 +24,21 @@ class RS_detail_Serializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class Message_Serializer(serializers.ModelSerializer):
+    sender = serializers.SlugRelatedField(
+        many = False,
+        read_only = True,
+        slug_field='email'
+    )
+    receiver = serializers.SlugRelatedField(
+        many = False,
+        read_only = True,
+        slug_field='email'
+    )
+    real_estate = serializers.SlugRelatedField(
+        many = False,
+        read_only = True,
+        slug_field='name'
+    )
     class Meta:
         model = Message
         fields = '__all__'

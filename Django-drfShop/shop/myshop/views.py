@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import Category, Real_estate, MyUser, Like, Message
-from .serializer import CateSerializer, RS_Serializer, Message_Serializer
+from .serializer import CateSerializer, RS_Serializer, RS_detail_Serializer, Message_Serializer
 
 class CateViewSet(APIView):
     authentication_classes = []
@@ -48,6 +48,14 @@ class Commercial(APIView):
         queryset = Real_estate.objects.filter(category__name="상업용")
         serializer = RS_Serializer(queryset, many=True)
         return Response(serializer.data)
+
+class Detail(APIView):
+    authentication_classes = []
+    permission_classes = []
+    def get(self, request, id, format=None):
+        queryset = Real_estate.objects.get(id = id)
+        serializer = RS_detail_Serializer(queryset, many=False)
+        return Response(serializer.data)
     
 class Signup(APIView):
     authentication_classes = []
@@ -86,3 +94,4 @@ class RecentMessage(APIView):
         queryset_total = queryset_receiver | queryset_sender
         serializer = Message_Serializer(queryset_total, many=True)
         return Response(serializer.data)
+    

@@ -73,7 +73,8 @@ class Real_estate(models.Model):
     price = models.IntegerField(default=0)
     upload_date = models.DateTimeField(default=timezone.now) #timezone import
     category = models.ForeignKey(Category, null=False, on_delete=models.CASCADE)
-    #address = models.TextField(max_length=300, null=False)
+    address = models.TextField(max_length=300, null=False)  
+
     likecount = models.IntegerField(default=0)  #이름 변경
     #추가
     LikeUser = models.ManyToManyField(MyUser, blank=True, related_name="LikeUser", through="Like", through_fields=('realestate_post','user'))

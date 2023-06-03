@@ -4,8 +4,8 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Category, Real_estate, MyUser, Like
-from .serializer import CateSerializer, RS_Serializer
+from .models import Category, Real_estate, MyUser, Like, Message
+from .serializer import CateSerializer, RS_Serializer, Message_Serializer
 
 class CateViewSet(APIView):
     authentication_classes = []
@@ -76,3 +76,13 @@ class Recommand(APIView):
         queryset.likecount = Like.objects.filter(realestate_post=queryset).count()
         queryset.save()
         return Response("success")
+    
+class RecentMessage(APIView):
+
+    def get(self, request, format=None):
+        user = request.headers['Username']
+        queryset_receiver = Message.objects.filter(receiver__email=user, recent_msg=True)
+        queryset_sender = Message.objects.filter(sender__email=user, recent_msg=True)
+        queryset_total = queryset_receiver | queryset_sender
+        serializer = Message_Serializer(queryset_total, many=True)
+        return Response(serializer.data)

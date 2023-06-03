@@ -84,3 +84,13 @@ class Real_estate(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     realestate_post = models.ForeignKey(Real_estate, on_delete=models.CASCADE)
+    
+class Message(models.Model):
+    sender = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="sender")
+    receiver = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="receiver")
+    real_estate = models.ForeignKey(Real_estate, on_delete=models.CASCADE)
+    message = models.TextField(max_length= 300, null=False)
+    send_time = models.DateTimeField(default= timezone.now)
+    recent_msg = models.BooleanField(default=False)
+    def __str__(self):
+        return ("[{0}]{1} -> {2}(@{3})").format(self.recent_msg, self.sender, self.receiver, self.real_estate)
